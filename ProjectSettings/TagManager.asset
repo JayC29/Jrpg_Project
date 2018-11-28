@@ -3,7 +3,10 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Dungeon Entrance
+  - Main Character
+  - Dungeon Exit
   layers:
   - Default
   - TransparentFX
@@ -44,9 +47,9 @@ TagManager:
   - name: Floor
     uniqueID: 1655286029
     locked: 0
-  - name: Characters
-    uniqueID: 407057661
-    locked: 0
   - name: MidGround
     uniqueID: 2598542885
+    locked: 0
+  - name: Characters
+    uniqueID: 407057661
     locked: 0

@@ -17,6 +17,7 @@ public abstract class Character : MonoBehaviour
     {
         speed = 5;
         animator = GetComponent<Animator>();
+
 	}
 
     // Update is called once per frame

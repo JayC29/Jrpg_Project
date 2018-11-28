@@ -12,6 +12,7 @@ public class Player : Character
 	// Use this for initialization
 	protected override void Start ()
     {
+        Debug.Log("I'm Woke");
         health.Initialize(initHealth, initHealth);
 
         base.Start();

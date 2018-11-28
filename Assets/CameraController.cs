@@ -13,6 +13,8 @@ public class CameraController : MonoBehaviour {
         //focusTarget = new GameObject("Player");
         moveSpeed = 7;
 
+        focusTarget = GameObject.Find("Player");
+
     }
 	
 	// Update is called once per frame
