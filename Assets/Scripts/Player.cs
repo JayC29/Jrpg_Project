@@ -7,6 +7,11 @@ public class Player : Character
     [SerializeField]
     private Stat health;
 
+    [SerializeField]
+    private Stat mana;
+
+    private float initMana = 50;
+
     private float initHealth = 100;
 
 	// Use this for initialization
@@ -14,6 +19,8 @@ public class Player : Character
     {
         Debug.Log("I'm Woke");
         health.Initialize(initHealth, initHealth);
+
+        mana.Initialize(initMana, initMana);
 
         base.Start();
 	}
@@ -36,10 +43,12 @@ public class Player : Character
         if (Input.GetKeyDown(KeyCode.I))
         {
             health.MyCurrentValue -= 10;
+            mana.MyCurrentValue -= 10;
         }
         if (Input.GetKeyDown(KeyCode.O))
         {
             health.MyCurrentValue += 10;
+            mana.MyCurrentValue += 10;
         }
 
 
