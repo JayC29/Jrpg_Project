@@ -31,7 +31,7 @@ public class Player : Character
 	}
 	
 	// Update is called once per frame
-	protected override void Update ()
+	protected override void Update()
     {
         GetInput();
         InLineOfSight();
