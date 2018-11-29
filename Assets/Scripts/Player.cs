@@ -14,6 +14,11 @@ public class Player : Character
 
     private float initHealth = 100;
 
+    [SerializeField]
+    private GameObject[] spellPrefab;
+
+    public Transform target { get; set; }
+
 	// Use this for initialization
 	protected override void Start ()
     {
@@ -29,7 +34,7 @@ public class Player : Character
 	protected override void Update()
     {
         GetInput();
-
+        InLineOfSight();
         base.Update();
 	}
 
@@ -71,21 +76,37 @@ public class Player : Character
         }
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            attackRoutine = StartCoroutine(Attack());
+            if (!isAttacking && !IsMoving)
+            {
+                attackRoutine = StartCoroutine(Attack());
+            }
+           
         }
     }
 
     public IEnumerator Attack()
     {
-        if(!isAttacking && !IsMoving)
-        {
-            isAttacking = true;
-            animator.SetBool("attack", isAttacking);
 
-            yield return new WaitForSeconds(2); //cast time
+        isAttacking = true;
+        animator.SetBool("attack", isAttacking);
 
-            StopAttack();
-        }
-        
+        yield return new WaitForSeconds(2); //cast time
+
+        CastSpell();
+
+        StopAttack();
+    }
+
+    public void CastSpell()
+    {
+        Instantiate(spellPrefab[0], transform.position, Quaternion.identity);
+    }
+
+    private bool InLineOfSight()
+    {
+        Vector3 targetDirection = (target.transform.position - transform.position).normalized;
+
+        Debug.DrawRay(transform.position, targetDirection);
+        return false;
     }
 }
