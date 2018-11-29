@@ -8,11 +8,15 @@ public abstract class Character : MonoBehaviour
     [SerializeField]
     private float speed;
 
-    private Animator animator;
+    protected Animator animator;
 
     protected Vector2 direction;
 
     private Rigidbody2D myRigidbody;
+
+    protected bool isAttacking = false;
+
+    protected Coroutine attackRoutine;
 
     public bool IsMoving
     {
@@ -60,6 +64,13 @@ public abstract class Character : MonoBehaviour
 
             animator.SetFloat("x", direction.x);
             animator.SetFloat("y", direction.y);
+
+            //stop casting if player moves
+            StopAttack();
+        }
+        else if (isAttacking)
+        {
+            ActivateLayer("AttackLayer");
         }
         else
         {
@@ -75,6 +86,17 @@ public abstract class Character : MonoBehaviour
         }
 
         animator.SetLayerWeight(animator.GetLayerIndex(layerName), 1);
+    }
+
+    public void StopAttack()
+    {
+        if(attackRoutine != null)
+        {
+            StopCoroutine(attackRoutine);
+            isAttacking = false;
+            animator.SetBool("attack", isAttacking);
+        }
+
     }
     
 }
