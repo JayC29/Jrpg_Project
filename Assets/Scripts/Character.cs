@@ -18,6 +18,8 @@ public abstract class Character : MonoBehaviour
 
     protected Coroutine attackRoutine;
 
+    
+
     public bool IsMoving
     {
         get
@@ -31,8 +33,18 @@ public abstract class Character : MonoBehaviour
         speed = 5;
         animator = GetComponent<Animator>();
         myRigidbody = GetComponent<Rigidbody2D>();
+        setCharacterSpeed(this.gameObject.tag);
 
-	}
+
+    }
+
+    public void setCharacterSpeed(string characterTag)
+    {
+        if (this.name == "Jerry")
+        {
+            speed = 1.5f;
+        }
+    }
 
     // Update is called once per frame
     protected virtual void Update()
@@ -88,7 +100,7 @@ public abstract class Character : MonoBehaviour
         animator.SetLayerWeight(animator.GetLayerIndex(layerName), 1);
     }
 
-    public void StopAttack()
+    public virtual void StopAttack()
     {
         if(attackRoutine != null)
         {

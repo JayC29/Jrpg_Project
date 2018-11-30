@@ -67,4 +67,6 @@ public class Stat : MonoBehaviour {
         MyMaxValue = maxValue;
         MyCurrentValue = currentValue;
     }
+
+
 }
