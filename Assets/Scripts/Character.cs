@@ -44,6 +44,10 @@ public abstract class Character : MonoBehaviour
         {
             speed = 1.5f;
         }
+        if (this.name == "Winged_Jerry")
+        {
+            speed = 2.0f;
+        }
     }
 
     // Update is called once per frame
