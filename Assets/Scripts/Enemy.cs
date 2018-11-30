@@ -13,7 +13,8 @@ public class Enemy : NPC
 
     //private float initMana = 50;
 
-    private float initHealth = 10;
+    private float initHealth;
+
 
     //[SerializeField]
     //private CanvasGroup healthGroup;
@@ -23,6 +24,14 @@ public class Enemy : NPC
     // Use this for initialization
     protected override void Start()
     {
+            if (this.name == "Jerry")
+            {
+                initHealth = 10;
+            }
+            if (this.name == "Winged_Jerry")
+            {
+                initHealth = 20;
+            }
 
         Debug.Log("Jerry Woke");
         health.Initialize(initHealth, initHealth);
