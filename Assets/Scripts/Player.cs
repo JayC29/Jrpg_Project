@@ -5,7 +5,9 @@ using UnityEngine;
 public class Player : Character
 {
     [SerializeField]
-    private Stat health;
+    public static Player Instance { set; get; }
+    [SerializeField]
+    public Stat health;
 
     [SerializeField]
     private Stat mana;
@@ -14,9 +16,15 @@ public class Player : Character
 
     private float initHealth = 100;
 
+    private SpellBook spellBook;
+
+    public Transform target { get; set; }
+
 	// Use this for initialization
 	protected override void Start ()
     {
+        Instance = this;
+        spellBook = GetComponent<SpellBook>();
         Debug.Log("I'm Woke");
         health.Initialize(initHealth, initHealth);
 
@@ -29,7 +37,7 @@ public class Player : Character
 	protected override void Update()
     {
         GetInput();
-
+       // InLineOfSight();
         base.Update();
 	}
 
@@ -71,21 +79,68 @@ public class Player : Character
         }
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            attackRoutine = StartCoroutine(Attack());
+            if (!isAttacking && !IsMoving)
+            {
+                //TODO CHANGE INDEX IF MORE SPELLS ADDED
+                attackRoutine = StartCoroutine(Attack(0));
+            }
+           
         }
     }
 
-    public IEnumerator Attack()
+    public IEnumerator Attack(int spellIndex)
     {
-        if(!isAttacking && !IsMoving)
-        {
-            isAttacking = true;
-            animator.SetBool("attack", isAttacking);
+        Spell spell = spellBook.CastSpell(spellIndex);
+        isAttacking = true;
+        animator.SetBool("attack", isAttacking);
 
-            yield return new WaitForSeconds(2); //cast time
+        yield return new WaitForSeconds(spell.CastTime); //cast time
+        Debug.Log("reached cast spell");
+        CastSpell(spell);
 
-            StopAttack();
-        }
-        
+        StopAttack();
     }
+
+    public void CastSpell(Spell spell)
+    {
+        Instantiate(spell.SpellPrefab, transform.position, Quaternion.identity);
+    }
+
+    private bool InLineOfSight()
+    {
+        Debug.Log("transform is " + target.transform.position);
+        Vector3 targetDirection = (target.transform.position - transform.position).normalized;
+
+        Debug.DrawRay(transform.position, targetDirection);
+        return false;
+    }
+
+    public override void StopAttack()
+    {
+        spellBook.StopCast();
+        base.StopAttack();
+    }
+
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //     Transform transform = collision.gameObject.transform.Find("Hitbox");
+    //    GameObject ChildGameObject1 = null;
+    //    if (transform == null)
+    //    {
+    //        Debug.Log("transform is null");
+    //    }
+    //    else
+    //    {
+    //        ChildGameObject1 = transform.gameObject;
+    //        Debug.Log("gameobject is null");
+    //    }
+
+        
+    //    if (ChildGameObject1 != null)
+    //    {
+    //        //collision.IsTouching(ChildGameObject1.GetComponent<Collider2D>())
+    //        Debug.Log("entered rats collider" + " my tag is: " + ChildGameObject1.tag + "name is : " + ChildGameObject1.name);
+    //        health.MyCurrentValue -= 1;
+    //    }
+    //}
 }

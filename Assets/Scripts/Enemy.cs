@@ -2,12 +2,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : NPC {
+public class Enemy : NPC
+{
 
     [SerializeField]
-    private CanvasGroup healthGroup;
+    private Stat health;
+
+    //[SerializeField]
+    //private Stat mana;
+
+    //private float initMana = 50;
+
+    private float initHealth = 10;
+
+    //[SerializeField]
+    //private CanvasGroup healthGroup;
 
     private Transform target;
+
+    // Use this for initialization
+    protected override void Start()
+    {
+
+        Debug.Log("Jerry Woke");
+        health.Initialize(initHealth, initHealth);
+
+        base.Start();
+    }
 
     public Transform Target
     {
@@ -41,4 +62,30 @@ public class Enemy : NPC {
             direction = Vector2.zero;
         }
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        GameObject ChildGameObject1 = gameObject.transform.GetChild(0).gameObject;
+        if (collision.IsTouching(ChildGameObject1.GetComponent<Collider2D>()) && collision.tag == "Player")
+        {
+
+            Debug.Log("entered rats collider" + " my tag is: " + ChildGameObject1.tag + "colliderParameter name is: " +collision.name);
+            Player.Instance.health.MyCurrentValue -= 10;
+        }
+
+        if (collision.IsTouching(ChildGameObject1.GetComponent<Collider2D>()) && collision.tag == "Spell")
+        {
+
+            Debug.Log("entered rats collider" + " my tag is: " + ChildGameObject1.tag + "colliderParameter name is: " + collision.name);
+            health.MyCurrentValue -= 10;
+
+            if(health.MyCurrentValue == 0)
+            {
+                Destroy(gameObject);
+                Debug.Log("JERRY'S DEAD!!");
+            }
+        }
+    }
+
+
 }

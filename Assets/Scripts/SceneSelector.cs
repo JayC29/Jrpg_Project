@@ -21,11 +21,11 @@ public class SceneSelector : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log("Entered Collider, trying to load scene: " + loadLevel + " tag is: " + other.tag + " my tag is " + this.tag);
-        if (this.tag =="Dungeon Entrance")
+        if (this.tag =="Dungeon Entrance" && other.tag == "Player")
         {
             SceneManager.LoadScene(loadLevel);
         }
-        else if(this.tag == "Dungeon Exit")
+        else if(this.tag == "Dungeon Exit" && other.tag == "Player")
         {
             SceneManager.LoadScene(loadLevel);
 
