@@ -4,24 +4,46 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
+    public static GameManager instance;
     [SerializeField]
-    private Player player;
+    public GameObject prefab;
 
-	// Use this for initialization
-	void Start () {
-		
+    [SerializeField]
+    private GameObject player;
+
+
+    // Use this for initialization
+    void Start () {
+		if(instance == null)
+        {
+            instance = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        }
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+        if(player != null)
+        {
+            if (Player.Instance.health.MyCurrentValue == 0)
+            {
+                Destroy(player.gameObject);
+                StartCoroutine(PlayerRespawn());
+            }
+        }
+
+
 	}
 
-    private void ClickTarget()
+    public IEnumerator PlayerRespawn()
     {
-        if(Input.GetMouseButton(0))
-        {
-            RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, Mathf.Infinity);
-        }
+        
+         yield return new WaitForSeconds(5); //cast time
+        //GameObject ChildGameObject1 = gameObject.transform.GetChild(0).gameObject;
+        player = Instantiate(prefab, GameObject.Find("Spawn Point").transform);
+        player.transform.position = GameObject.Find("Spawn Point").transform.position;
+
+
     }
+
+
 }

@@ -21,6 +21,8 @@ public class Enemy : NPC
 
     private Transform target;
 
+    
+
     // Use this for initialization
     protected override void Start()
     {
@@ -72,29 +74,37 @@ public class Enemy : NPC
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
         GameObject ChildGameObject1 = gameObject.transform.GetChild(0).gameObject;
         if (collision.IsTouching(ChildGameObject1.GetComponent<Collider2D>()) && collision.tag == "Player")
         {
 
             Debug.Log("entered rats collider" + " my tag is: " + ChildGameObject1.tag + "colliderParameter name is: " +collision.name);
-            Player.Instance.health.MyCurrentValue -= 10;
+            Player.Instance.health.MyCurrentValue -= 1f;
         }
 
+
+
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        GameObject ChildGameObject1 = gameObject.transform.GetChild(0).gameObject;
         if (collision.IsTouching(ChildGameObject1.GetComponent<Collider2D>()) && collision.tag == "Spell")
         {
 
             Debug.Log("entered rats collider" + " my tag is: " + ChildGameObject1.tag + "colliderParameter name is: " + collision.name);
             health.MyCurrentValue -= 10;
 
-            if(health.MyCurrentValue == 0)
+            if (health.MyCurrentValue == 0)
             {
                 Destroy(gameObject);
                 Debug.Log("JERRY'S DEAD!!");
             }
         }
     }
+
 
 
 }

@@ -11,6 +11,7 @@ TagManager:
   - Enemy
   - Ignore
   - Spell
+  - GameManager
   layers:
   - Default
   - TransparentFX

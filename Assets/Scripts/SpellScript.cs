@@ -13,7 +13,7 @@ public class SpellScript : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
-        spellSpeed = 3;
+        spellSpeed = 3.5f;
         rigidbody = GetComponent<Rigidbody2D>();
 
         GameObject tempObj = FindClosestToTarget(this.transform, "Enemy");
@@ -31,8 +31,15 @@ public class SpellScript : MonoBehaviour {
 
         target = tempObj.transform;
 
-        
+        StartCoroutine(LifeSpan());
         //Debug.Log("Target is " + );
+    }
+
+    public IEnumerator LifeSpan()
+    {
+        yield return new WaitForSeconds(5); //spell length
+
+        Destroy(gameObject);
     }
 
     //find closest enemy at spellcast

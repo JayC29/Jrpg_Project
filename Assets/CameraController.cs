@@ -19,9 +19,27 @@ public class CameraController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        //each frame update the camera's position changes to the main character's position
-        targetPosition = new Vector3(focusTarget.transform.position.x, focusTarget.transform.position.y, transform.position.z);
+        if(focusTarget != null)
+        {
+            //each frame update the camera's position changes to the main character's position
+            targetPosition = new Vector3(focusTarget.transform.position.x, focusTarget.transform.position.y, transform.position.z);
 
-        transform.position = Vector3.Lerp(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+            transform.position = Vector3.Lerp(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+        }
+        else
+        {
+            StartCoroutine(findTarget());
+        }
+
 	}
+
+    public IEnumerator findTarget()
+    {
+        while(focusTarget == null)
+        {
+            Debug.Log("focus target is null");
+            focusTarget = GameObject.Find("Player(Clone)");
+            yield return null;
+        }
+    }
 }

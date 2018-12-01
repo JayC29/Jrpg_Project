@@ -14,14 +14,14 @@ public class Player : Character
 
     private float initMana = 50;
 
-    private float initHealth = 100;
+    private float initHealth = 1000;
 
     private SpellBook spellBook;
 
     public Transform target { get; set; }
 
-	// Use this for initialization
-	protected override void Start ()
+    // Use this for initialization
+    protected override void Start()
     {
         Instance = this;
         spellBook = GetComponent<SpellBook>();
@@ -29,17 +29,17 @@ public class Player : Character
         health.Initialize(initHealth, initHealth);
 
         mana.Initialize(initMana, initMana);
-
+        StartCoroutine(ManaRecharge());
         base.Start();
-	}
-	
-	// Update is called once per frame
-	protected override void Update()
+    }
+
+    // Update is called once per frame
+    protected override void Update()
     {
         GetInput();
-       // InLineOfSight();
+        // InLineOfSight();
         base.Update();
-	}
+    }
 
     private void GetInput()
     {
@@ -77,15 +77,25 @@ public class Player : Character
         {
             direction += Vector2.right;
         }
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             if (!isAttacking && !IsMoving)
             {
                 //TODO CHANGE INDEX IF MORE SPELLS ADDED
                 attackRoutine = StartCoroutine(Attack(0));
             }
-           
+
         }
+    }
+    public IEnumerator ManaRecharge()
+    {
+        while(true)
+        {
+            mana.MyCurrentValue += 1f;
+            yield return new WaitForSeconds(1); //cast time
+        }
+        
+
     }
 
     public IEnumerator Attack(int spellIndex)
@@ -103,7 +113,12 @@ public class Player : Character
 
     public void CastSpell(Spell spell)
     {
-        Instantiate(spell.SpellPrefab, transform.position, Quaternion.identity);
+        if(mana.MyCurrentValue > 4)
+        {
+            Instantiate(spell.SpellPrefab, transform.position, Quaternion.identity);
+            mana.MyCurrentValue -= 5;
+        }
+
     }
 
     private bool InLineOfSight()
